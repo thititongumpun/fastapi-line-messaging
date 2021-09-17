@@ -1,9 +1,36 @@
-version: '3.7'
-
+version: '3'
 services:
-  web:
-    build: .
+  sentiment-api:
+    container_name: sentiment-api
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '8080:8080'
+      - 8000:8000
+    restart: always
     volumes:
-      - .:/app
+      - ./:/usr/src/app
+    networks:
+      sentiment-api:
+        ipv4_address: 10.5.0.6
+    depends_on:
+      - nginx
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    restart: always
+    networks:
+      sentiment-api:
+        ipv4_address: 10.5.0.5
+
+networks:
+  sentiment-api:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
