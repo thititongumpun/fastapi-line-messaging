@@ -64,10 +64,10 @@ def message_text(event):
     r = httpx.get(URL, params=params)
     sentiment = r.json()['Sentiment']
     predict = r.json()['Predict']
-    serviceType = r.json()['บริการ']
-    textLine = f'Sentiment: {sentiment}'
+    serviceType = r.json()['Service Type']
+    textLine = f'Text: {sentiment}'
     textSecondLine = f'Predict: {predict}'
-    textThirdLine = f'ServierType: {serviceType}'
+    textThirdLine = f'Service Type: {serviceType}'
 
     line_bot_api.reply_message(
         event.reply_token,
